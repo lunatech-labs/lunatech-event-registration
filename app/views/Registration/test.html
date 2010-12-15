@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Embedded registration</title>
+</head>
+<body>
+
+<p>
+My input: <input type="text"/>
+</p>
+<p>
+Voila:
+</p>
+
+<iframe id="${eventId}" allowTransparency="true" width="570" height="500" frameborder="0">You must have a browser that supports iframes</iframe>
+<script type="text/javascript" src="@@{'/public/javascripts/jquery-1.4.2.min.js'}" ></script>
+<script type="text/javascript" src="@@{Registration.embed(community, eventId)}" ></script>
+
+</body>
+
+</html>

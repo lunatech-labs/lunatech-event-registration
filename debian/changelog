@@ -1,0 +1,25 @@
+lunatech-events (1.1.2) maverick; urgency=low
+
+  * Fixed IRC encoding
+  * Fixed email url encoding
+
+ -- Stephane Epardaud <stephane@epardaud.fr>  Wed, 15 Dec 2010 14:14:16 +0100
+
+lunatech-events (1.1.1) maverick; urgency=low
+
+  * Fixed embed.js relative url
+
+ -- Stephane Epardaud <stephane@epardaud.fr>  Wed, 15 Dec 2010 14:02:02 +0100
+
+lunatech-events (1.1) maverick; urgency=low
+
+  * Fixed bot output
+  * Check for registration when confirming
+
+ -- Stephane Epardaud <stephane@epardaud.fr>  Wed, 15 Dec 2010 13:28:48 +0100
+
+lunatech-events (1.0) UNRELEASED; urgency=low
+
+  * Initial release
+
+ -- Stephane Epardaud <stephane@epardaud.fr>  Wed, 15 Dec 2010 11:12:04 +0100

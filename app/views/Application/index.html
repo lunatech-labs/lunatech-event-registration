@@ -1,0 +1,38 @@
+#{extends 'main.html' /}
+#{set page:'events' /}
+#{set title:'Events' /}
+
+#{set 'moreStyles'}
+<style>
+ .date {
+  white-space: pre;
+ }
+</style>
+#{/set}
+
+<h1>Event list</h1>
+
+<table class="vertical">
+ <tr>
+  <th>ID</th>
+  <th>Date</th>
+  <th>Title</th>
+  <th>Open</th>
+  <th>Nb Participants</th>
+  <th>Limit</th>
+  <th>Hard Limit</th>
+  <th>Actions</th>
+ </tr>
+#{list items: events, as: 'event'}
+ <tr>
+  <td><a href="@{Application.event(event.id)}">${event.id}</a></td>
+  <td class="date">${event.date.format('dd MMM yyyy')}</td>
+  <td>${event.title}</td>
+  <td>${event.open ? 'Yes' : 'No'}</td>
+  <td>${event.participants.size()}</td>
+  <td>${event.participantLimit ?: 'None'}</td>
+  <td>${event.hardLimit ? 'Yes' : 'No'}</td>
+  <td><a href="@{Application.editEvent(event.id)}">Edit</a></td>
+ </tr>
+#{/list}
+</table>

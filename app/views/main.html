@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html class="${embed ? 'embed' : ''}">
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/ui-lightness/jquery-ui-1.8.7.custom.css'}">
+        #{get 'moreStyles' /}
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        <script src="@{'/public/javascripts/jquery-1.4.2.min.js'}" type="text/javascript" charset="utf-8"></script>
+        <script src="@{'/public/javascripts/jquery-ui-1.8.7.custom.min.js'}" type="text/javascript" charset="utf-8"></script>
+        #{get 'moreScripts' /}
+    </head>
+    <body class="${embed ? 'embed' : ''}">
+   		#{if !embed}
+    	<div class="container">
+    		<div id="header">
+			    <h1>
+			    	<a href="/">
+			    		<div id="logo"></div>
+			    		#{if session?.username}
+			    			<span>Registration Console</span>
+			    		#{/if}
+			    	</a>
+			    </h1>
+	    		#{if session?.username}
+			    <ul class="menu">
+			    	<!-- Watch the WS between "li" elements :( -->
+			    	<li ${page == 'events' ? "class='active'" : ''}><a href="@{Application.index}">Events</a></li><li 
+			    		${page == 'create-event' ? "class='active'" : ''}><a href="@{Application.createEvent}">Create Event</a></li><li
+			    		${page == 'participants' ? "class='active'" : ''}><a href="@{Application.participants}">Participants</a></li>
+			    </ul>
+			    #{/if}
+    		</div>
+	        <div id="main">
+		        #{doLayout /}
+	        </div>
+   		#{/if}
+    	</div>
+   		#{else}
+	        #{doLayout /}
+   		#{/else}
+    </body>
+</html>

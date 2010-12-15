@@ -1,0 +1,12 @@
+Source: lunatech-events
+Section: unknown
+Priority: extra
+Maintainer: Stephane Epardaud <stephane@epardaud.fr>
+Build-Depends: debhelper (>= 7), ant
+Standards-Version: 3.8.4
+
+Package: lunatech-events
+Architecture: all
+Depends: ${misc:Depends}, play-1.1
+Description: The Lunatech Event Registration application
+ Now in Play!

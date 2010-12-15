@@ -1,0 +1,58 @@
+#{extends 'main.html' /}
+#{set title:'Participant '+participant.emailAddress /}
+
+#{set 'moreStyles'}
+<style>
+ #addTags, #addTags > form {
+  display: inline;
+ }
+</style>
+#{/set}
+
+<div class="actions">
+ <a href="@{Application.deleteParticipant(participant.id)}">Delete</a>
+</div>
+
+<h1>${participant.emailAddress}</h1>
+
+<table class="horizontal">
+ <tr>
+  <th>First name</th>
+  <td>${participant.firstName}</td>
+ </tr>
+ <tr>
+  <th>Last name</th>
+  <td>${participant.lastName}</td>
+ </tr>
+ <tr>
+  <th>Company</th>
+  <td>${participant.company}</td>
+ </tr>
+ <tr>
+  <th>Comments</th>
+  <td>${participant.comments}</td>
+ </tr>
+</table>
+
+<script type="text/javascript">
+function toggleTags(){
+	jQuery("#addTags").toggle();
+	jQuery("#showAddTags").toggle();
+}
+</script>
+
+<div class="tags">
+Tags: 
+#{list participant.tags, as: 'tag'}
+ ${tag.name} <a href="@{Application.removeParticipantTag(participant.id, tag.id)}">[x]</a>
+#{/list}
+<button onclick="toggleTags()" id="showAddTags">Add tags</button>
+
+<div id="addTags" style="display: none;">
+#{form @Application.addParticipantTags(participant.id)}
+<input type="text" name="tags"/>
+<input type="submit" value="Add tags"/>
+<button onclick="toggleTags(); return false;">Cancel</button>
+#{/form}
+</div>
+</div>

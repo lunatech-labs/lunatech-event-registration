@@ -1,0 +1,177 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+p, h1, h2, h3, div.tags {
+	margin: 10px;
+}
+
+body, 
+html {
+	background: #DDD;
+	font-family: sans-serif;
+}
+
+body.embed,
+html.embed {
+	background: transparent;
+}
+
+body > .container {
+	background: white;
+	border-radius: 20px;
+	margin: 20px 10px;
+	padding: 10px 20px;
+}
+
+#logo {
+	height: 60px;
+	width: 202px;
+	background: url("http://www.lunatech-research.com/sites/default/themes/research/images/web/logo.png");
+	display: inline-block;
+}
+
+#header > h1 > a {
+	text-decoration: none;
+}
+
+ul.menu {
+	background: black;
+	width: 100%;
+	margin: 20px 0;
+	padding: 0;
+	background: -webkit-gradient(
+    	linear,
+    	left bottom,
+    	left top,
+    	color-stop(0.33, rgb(0,0,0)),
+    	color-stop(1, rgb(71,70,71))
+	);
+	background: -moz-linear-gradient(
+    	center bottom,
+    	rgb(0,0,0) 33%,
+    	rgb(71,70,71) 100%
+	);
+}
+
+ul.menu > li {
+	display: inline-block;
+	padding: 10px;
+	font-weight: bold;
+	color: white;
+	border-right: 1px solid #555;
+}
+
+ul.menu > li.active {
+	background: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.33, rgb(18,133,179)),
+	    color-stop(1, rgb(76,213,255))
+	);
+	background: -moz-linear-gradient(
+    	center bottom,
+    	rgb(18,133,179) 33%,
+    	rgb(76,213,255) 100%
+	);
+}
+
+ul.menu > li a {
+	color: white;
+	text-decoration: none;
+}
+
+#main {
+	margin-top: 20px;
+}
+
+input[type=text],
+textarea {
+ background: aliceBlue;
+ border: 1px solid #BBB;
+}
+
+button,
+input[type=submit],
+input[type=button] {
+ background: #47A;
+ border: 1px solid gray;
+ color: white;
+ padding: 3px 5px;
+}
+
+div.errors {
+	border: 1px red solid;
+	background: #ffbbbb;
+	padding: 5px 10px;
+}
+
+span.error {
+	color: red;
+}
+
+input.has_error {
+	border: 1px red solid;
+}
+
+.info {
+	font-size: smaller;
+	font-style: italic;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table.vertical th {
+	background: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0.33, rgb(18,133,179)),
+	    color-stop(1, rgb(76,213,255))
+	);
+	background: -moz-linear-gradient(
+    	center bottom,
+    	rgb(18,133,179) 33%,
+    	rgb(76,213,255) 100%
+	);
+	color: white;
+}
+
+table {
+	margin-top: 20px;
+}
+
+table.vertical td,
+table.vertical th {
+	border: 1px solid #ddd;
+}
+
+table td,
+table th {
+	padding: 5px;
+}
+
+table.horizontal th {
+	text-align: left;
+}
+
+table.horizontal td {
+	color: gray;
+}
+
+table.horizontal td,
+table.horizontal th {
+	border-top: 1px solid #ddd;
+}
+
+table.horizontal {
+	border-bottom: 1px solid #ddd;
+}
+
+.actions {
+	float: right;
+}

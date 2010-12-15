@@ -1,0 +1,59 @@
+#{extends 'main.html' /}
+
+#{set 'moreStyles'}
+<style>
+ input[type=text] {
+ 	width: 30em;
+ }
+ textarea {
+ 	width: 30em;
+ 	height: 10em;
+ }
+</style>
+#{/set}
+
+#{if !embed}
+	<h3>Registration for ${event.title}</h3>
+#{/if}
+
+#{if !event.registrationOpen}
+	<p>We are sorry but the registration for ${event.title} is closed. Try to register early for the next event ;).</p>
+#{/if}
+#{else}
+	#{if !embed}
+		<p>
+			Event takes place on the ${event.date.format('dd MMM yyyy')}.
+		</p>
+	#{/if}
+	
+    #{if event.participantLimit}
+    	<div class="limit">
+    	<p>
+    	This event is limited to the first ${event.limit} participants. There are currently ${event.participants.size()} participant(s) registered.
+	    </p>  
+		#{if event.participantLimit > event.participants.size()}
+			<p>
+		    #{if event.hardLimit}
+				Registration after the ${event.participantLimit} first participants will be closed, so register fast.
+		    #{/if}
+		    #{else}
+				Registration after the ${event.participantLimit} first participants will remain open in case the limit changes before the event, but <b>you will not be able to go to the
+				event unless you are contacted</b> to notify the limit has changed.
+		    #{/else}
+		#{/if}
+		#{else}
+			<p>
+			<span class="strong">The number of participants has reached its limit</span>, but registration remains open in case the limit changes before the event.
+			Register to be notified if the limit changes. <b>You will not be able to go to the event unless you are contacted</b> to notify the limit has changed.
+			</p>  
+			<p>
+			    ${event.descriptionAfterLimit.raw()} 
+			</p>  
+		#{/else}
+		</div>
+    #{/if}
+    
+    #{doLayout /}
+
+#{/else}
+

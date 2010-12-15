@@ -1,0 +1,123 @@
+%{
+ isNew = !event.persistent;
+}%
+#{set page: isNew? 'create-event' :'' /}
+#{extends 'main.html' /}
+#{set title: isNew ? 'Create Event' : 'Event '+event.title /}
+
+#{set 'moreStyles'}
+<style>
+ input[name='event.title'] {
+  width: 40em;
+ }
+ textarea {
+  width: 40em;
+  height: 10em;
+ }
+</style>
+#{/set}
+
+<div class="actions">
+#{if !isNew}
+  <a href="@{Application.event(event.id)}">View</a>
+  <br/>
+  <a href="@{Application.deleteEvent(event.id)}">Delete</a>
+#{/if}
+#{else}
+  <a href="@{Application.index()}">Cancel</a>
+#{/else}
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$( "#date" ).datepicker({
+			showOn: "both",
+			buttonImage: "@{'/public/images/calendar.gif'}",
+			buttonImageOnly: true,
+			dateFormat: 'dd-mm-yy'
+		});
+	});
+</script>
+
+#{ifErrors}
+ 
+   <h1>Errors…</h1>
+ 
+#{/ifErrors}
+
+<h1>${event.id}</h1>
+
+#{form @Application.saveEvent()}
+#{if !isNew}
+	<input type="hidden" name="event.id" value="${event.id}"/>
+#{/if}
+<table class="horizontal">
+ #{if isNew}
+ <tr>
+  <th>ID</th>
+  <td>
+  	<input name="event.id" value="${event.id}"/>
+	<span class="error">#{error 'event.id' /}</span>
+  </td>
+ </tr>
+ #{/if}
+ <tr>
+  <th>Date</th>
+  <td>
+  	<input id="date" name="event.date" value="${event.date?.format('dd-MM-yyyy')}"/>
+	<span class="error">#{error 'event.date' /}</span>
+  </td>
+ </tr>
+ #{if !isNew}
+ <tr>  
+  <th>Template</th>
+  <td>${event.template}</td>
+ </tr>
+ #{/if}
+ <tr>  
+  <th>Open</th>
+  <td>
+  	<input type="checkbox" name="event.open" ${event.open ? 'checked="checked"' : ''}/>
+  </td>
+ </tr>
+ <tr>  
+  <th>Title</th>
+  <td>
+  	<input name="event.title" value="${event.title}"/>
+	<span class="error">#{error 'event.title' /}</span>
+  </td>
+ </tr>
+ <tr>  
+  <th>Description</th>
+  <td>
+  	<textarea name="event.description">${event.description}</textarea>
+	<span class="error">#{error 'event.description' /}</span>
+  </td>
+ </tr>
+ <tr>  
+  <th>Limit</th>
+  <td>
+  	<input name="event.participantLimit" value="${event.participantLimit}"/>
+	<span class="error">#{error 'event.participantLimit' /}</span>
+  </td>
+ </tr>
+ <tr>  
+  <th>Hard Limit</th>
+  <td>
+   	<input type="checkbox" name="event.hardLimit" ${event.hardLimit ? 'checked="checked"' : ''}"/>
+  </td>
+ </tr>
+ <tr>  
+  <th>Description After Limit</th>
+  <td>
+  	<textarea name="event.descriptionAfterLimit">${event.descriptionAfterLimit}</textarea>
+	<span class="error">#{error 'event.descriptionAfterLimit' /}</span>
+  </td>
+ </tr>
+ <tr>
+ 	<td>
+ 		<input type="submit" value="Save"/> <a href="@{Application.event(event.id)}">cancel</a>
+ 	</td>
+ </tr>
+</table>
+#{/form}

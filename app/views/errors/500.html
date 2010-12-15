@@ -1,0 +1,16 @@
+#{extends 'main.html' /}
+#{set title:'Error' /}
+
+<h3>Error</h3>
+
+#{if play.mode.name() == 'DEV'}
+	#{500 exception /}
+#{/if}
+#{else}
+	#{if result}
+		${result.message}.
+	#{/if}
+	#{else}
+		Internal server error logged with id <strong>${exception.id}</strong>.
+	#{/else}
+#{/else}

@@ -1,0 +1,20 @@
+You have been sent this email because someone (hopefully you) is trying 
+to register to the following event:
+
+${event.title}
+
+Which will take place on: ${event.date.format('dd MMM yyyy')}.
+
+If you have tried to register to this event, then please go to the following
+website in order to complete your registration:
+
+${confirmURL.raw()}
+
+You can copy this address and paste it in your browser to complete the registration.
+You will NOT be registered to this event until you complete registration by
+going to this website and filling in more information.
+
+If you have no idea why we are sending you this confirmation email, this probably
+means someone is trying to register you to the event without your knowledge, you can
+safely ignore this message and will not be registered without further action from
+your part.

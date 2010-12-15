@@ -1,0 +1,24 @@
+#{extends 'main.html' /}
+#{set page:'participants' /}
+#{set title:'Participants' /}
+
+<h1>Participant list</h1>
+
+<table class="vertical">
+ <tr>
+  <th>Email</th>
+  <th>First name</th>
+  <th>Last name</th>
+  <th>Company</th>
+  <th>Actions</th>
+ </tr>
+#{list items: participants, as: 'participant'}
+ <tr>
+  <td><a href="@{Application.participant(participant.id)}">${participant.emailAddress}</a></td>
+  <td>${participant.firstName}</td>
+  <td>${participant.lastName}</td>
+  <td>${participant.company}</td>
+  <td></td>
+ </tr>
+#{/list}
+</table>

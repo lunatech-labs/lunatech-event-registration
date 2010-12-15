@@ -1,0 +1,27 @@
+<p>
+You have been sent this email because someone (hopefully you) is trying 
+to register to the following event:
+</p>
+
+<h3>${event.title}</h3>
+
+<p>
+Which will take place on: <b>${event.date.format('dd MMM yyyy')}</b>.
+</p>
+
+<p>
+If you have tried to register to this event, then please 
+<a href="${confirmURL.raw()}">complete your registration</a> online.
+</p>
+
+<p>
+You will NOT be registered to this event until you complete registration by
+clicking on the previous link and filling in more information.
+</p>
+
+<p><em>
+If you have no idea why we are sending you this confirmation email, this probably
+means someone is trying to register you to the event without your knowledge, you can
+safely ignore this message and will not be registered without further action from
+your part.
+</em></p>

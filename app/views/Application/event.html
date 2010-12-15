@@ -1,0 +1,119 @@
+#{extends 'main.html' /}
+#{set title:'Event '+event.title /}
+
+#{set 'moreStyles'}
+<style>
+ #addTags, #addTags > form {
+  display: inline;
+ }
+</style>
+#{/set}
+
+<div class="actions">
+ <a href="@{Application.editEvent(event.id)}">Edit</a>
+ <br/>
+ <a href="@{Application.deleteEvent(event.id)}">Delete</a>
+</div>
+
+<h1>${event.id}</h1>
+
+<table class="horizontal">
+ <tr>
+  <th>Date</th>
+  <td>${event.date.format('dd MMM yyyy')}</td>
+ </tr>
+ <tr>  
+  <th>Template</th>
+  <td>${event.template}</td>
+ </tr>
+ <tr>  
+  <th>Open</th>
+  <td>${event.open ? 'Yes' : 'No'}</td>
+ </tr>
+ <tr>  
+  <th>Title</th>
+  <td>${event.title}</td>
+ </tr>
+ <tr>  
+  <th>Description</th>
+  <td>${event.description.raw()}</td>
+ </tr>
+ <tr>  
+  <th>Limit</th>
+  <td>${event.participantLimit ?: 'None'}</td>
+ </tr>
+ <tr>  
+  <th>Hard Limit</th>
+  <td>${event.hardLimit ? 'Yes' : 'No'}</td>
+ </tr>
+ <tr>  
+  <th>Description After Limit</th>
+  <td>${event.descriptionAfterLimit?.raw()}</td>
+ </tr>
+ <tr>
+  <th>Number of Participants</th>
+  <td>${event.participants.size()}</td>
+ </tr>
+ <tr>
+  <th>Registration Link</th>
+  <td><a href="@{Registration.register(event.community.id, event.id)}">@{Registration.register(event.community.id, event.id)}</a></td>
+ </tr>
+ <tr>
+  <th>Embedded TEST Link</th>
+  <td><a href="@{Registration.test(event.community.id, event.id)}">@{Registration.test(event.community.id, event.id)}</a></td>
+ </tr>
+ <tr>
+  <th>Code for embedding</th>
+  <td>
+<pre>
+ &lt;iframe id="${event.id}" allowTransparency="true" width="570" height="500" 
+  frameborder="0">You must have a browser that supports iframes&lt;/iframe>
+ &lt;script type="text/javascript" src="@@{'/public/javascripts/jquery-1.4.2.min.js'}" >&lt;/script>
+ &lt;script type="text/javascript" src="@@{Registration.embed(event.community.id, event.id)}" >&lt;/script>
+</pre>
+ </tr>
+</table>
+
+<script type="text/javascript">
+function toggleTags(){
+	jQuery("#addTags").toggle();
+	jQuery("#showAddTags").toggle();
+}
+</script>
+
+<div class="tags">
+Tags: 
+#{list event.tags, as: 'tag'}
+ ${tag.name} <a href="@{Application.removeTag(event.id, tag.id)}">[x]</a>
+#{/list}
+<button onclick="toggleTags()" id="showAddTags">Add tags</button>
+
+<div id="addTags" style="display: none;">
+#{form @Application.addTags(event.id)}
+<input type="text" name="tags"/>
+<input type="submit" value="Add tags"/>
+<button onclick="toggleTags(); return false;">Cancel</button>
+#{/form}
+</div>
+</div>
+
+<table class="vertical">
+ <tr>
+  <th>Email</th>
+  <th>First Name</th>
+  <th>Last Name</th>
+  <th>Company</th>
+  <th>Comments</th>
+  <th>Actions</th>
+ </tr>
+#{list items: event.participants, as: 'participant'}
+ <tr>
+  <td><a href="@{Application.participant(participant.id)}">${participant.emailAddress}</a></td>
+  <td>${participant.firstName}</td>
+  <td>${participant.lastName}</td>
+  <td>${participant.company}</td>
+  <td>${participant.comments}</td>
+  <td><a href="@{Application.unregisterParticipant(event.id, participant.id)}">Remove</a></td>
+ </tr>
+#{/list}
+</table>
