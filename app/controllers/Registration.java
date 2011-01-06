@@ -5,11 +5,14 @@ import java.util.Map;
 
 import jobs.IRCMessageJob;
 
+import jobs.RulesNotificationJob;
 import org.apache.commons.lang.StringUtils;
 
 import mails.RegistrationMails;
 import models.Event;
 import models.Participant;
+import play.Logger;
+import play.Play;
 import play.data.validation.Validation;
 import play.libs.Crypto;
 import play.mvc.Controller;
@@ -130,14 +133,34 @@ public class Registration extends Controller {
 		participant.save();
 		event.participants.add(participant);
 		event.save();
-		
-		IRCMessageJob ircMessageJob = new IRCMessageJob(participant.firstName+" "+participant.lastName
-				+" ("+participant.emailAddress
-				+"), from "+participant.company+", has registered for "+event.title+", which now has "
-				+event.participants.size()+" participant(s)");
-		ircMessageJob.now();
+
+		notify(participant, event);
 		
 		render(event, embed);
+	}
+
+	private static void notify(final Participant participant, final Event event) {
+		final String rulesProperty = Play.configuration.getProperty("notification.rules", "false");
+		final boolean doRules = "true".equals(rulesProperty);
+
+		Logger.info(String.format("notification.rules=[%s]", rulesProperty));
+		if (doRules)
+			notifyRulesEngine(participant, event);
+		else
+			sendIRCMessage(participant, event);
+	}
+
+	private static void sendIRCMessage(final Participant participant, final Event event) {
+		IRCMessageJob ircMessageJob = new IRCMessageJob(participant.firstName+" "+participant.lastName
+			+" ("+participant.emailAddress
+			+"), from "+participant.company+", has registered for "+event.title+", which now has "
+			+event.participants.size()+" participant(s)");
+		ircMessageJob.now();
+	}
+
+	private static void notifyRulesEngine(final Participant participant, final Event event) {
+		RulesNotificationJob rulesNotificationJob = new RulesNotificationJob (participant, event);
+		rulesNotificationJob.now();
 	}
 
 	public static void error(String message, boolean embed){

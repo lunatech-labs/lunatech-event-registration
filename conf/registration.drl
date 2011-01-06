@@ -1,0 +1,14 @@
+package drools;
+
+import rules.RegistrationEvent
+import rules.IRCBotFacade
+
+global rules.IRCBotFacade IRCBOT
+
+rule registration
+when
+	$rEvent : RegistrationEvent()
+then
+	IRCBOT.send($rEvent.getRegistrationInfo());
+	retract($rEvent);
+end

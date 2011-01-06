@@ -53,7 +53,7 @@ public class Event extends GenericModel {
 	public Integer participantLimit;
 	
 	public Boolean embed;
-	
+
 	@JoinColumn(name = "community_id")
 	@ManyToOne
 	public Community community;
