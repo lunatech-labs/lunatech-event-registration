@@ -6,3 +6,5 @@ debian/*.substvars
 debian/lunatech-events
 .classpath
 .project
+/.idea/
+/events.iml
