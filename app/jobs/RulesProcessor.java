@@ -4,11 +4,13 @@ import com.lunatech.events.StaticHolder;
 import models.Event;
 import models.Participant;
 import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderConfiguration;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.conf.EventProcessingOption;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import play.Logger;
@@ -40,10 +42,18 @@ public class RulesProcessor {
 			throw new InstantiationException(String.format("Failed to initialize rules engine [%s]", knowledgeBuilder.getErrors().toString()));
 		}
 
-		final KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
+		final KnowledgeBaseConfiguration knowledgeBaseConfiguration = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
+		knowledgeBaseConfiguration.setOption(EventProcessingOption.STREAM);
+		final KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(knowledgeBaseConfiguration);
 		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
 		this.statefulKnowledgeSession = knowledgeBase.newStatefulKnowledgeSession();
 		this.statefulKnowledgeSession.setGlobal("IRCBOT", new IRCBotFacade());
+
+		new Thread(new Runnable() {
+			public void run() {
+				statefulKnowledgeSession.fireUntilHalt();
+			}
+		}).start();
 	}
 
 	/**

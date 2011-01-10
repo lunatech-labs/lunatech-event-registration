@@ -1,14 +1,106 @@
 package drools;
 
+import java.util.ArrayList
+
 import rules.RegistrationEvent
 import rules.IRCBotFacade
 
 global rules.IRCBotFacade IRCBOT
 
-rule registration
+declare RegistrationEvent
+	@role(event)
+	@expires(17m)
+end
+
+declare Notification
+	@role(event)
+
+	bogus: int
+end
+
+declare Hartbeat
+	@role(event)
+
+	bogus: int
+end
+
+/*
+ * Initialise the hartbeat
+ */
+rule init
 when
-	$rEvent : RegistrationEvent()
+	not Hartbeat()
 then
+	insert(new Hartbeat());
+end
+
+/*
+ * A new hartbeat every second
+ */
+rule hartbeat
+	salience -100
+	timer(int: 1s)
+when
+	$hartbeat: Hartbeat()
+then
+	retract($hartbeat);
+	insert(new Hartbeat());
+end
+
+rule "first notification"
+when
+	not Notification()
+	ArrayList(size == 1)
+		from collect (RegistrationEvent())
+	$rEvent: RegistrationEvent()
+then
+	insert(new Notification());
 	IRCBOT.send($rEvent.getRegistrationInfo());
-	retract($rEvent);
+end
+
+rule "first notification multiple"
+when
+	not Notification()
+	ArrayList($size: size > 1)
+		from collect (RegistrationEvent())
+then
+	insert(new Notification());
+	IRCBOT.send($size + " registrations during initialization");
+end
+
+/*
+ * Give full information about one registration
+ * possibly waiting until 15 minutes after the
+ * last notification
+ */
+rule "notification"
+when
+	$hartbeat: Hartbeat()
+	not Notification(this before[0m, 15m] $hartbeat)
+	$notification: Notification()
+	ArrayList(size == 1)
+		from collect (RegistrationEvent(this after $notification))
+	$rEvent: RegistrationEvent(this after $notification)
+then
+	retract($notification);
+	insert(new Notification());
+	IRCBOT.send($rEvent.getRegistrationInfo());
+end
+
+/*
+ * Give a short summary about the number of
+ * registrations, waiting until 15 minutes after
+ * the last notification
+ */
+rule "notification multiple"
+when
+	$hartbeat: Hartbeat()
+	not Notification(this before[0m, 15m] $hartbeat)
+	$notification: Notification()
+	ArrayList($size: size > 1)
+		from collect (RegistrationEvent(this after $notification))
+then
+	retract($notification);
+	insert(new Notification());
+	IRCBOT.send($size + " registrations since last message");
 end

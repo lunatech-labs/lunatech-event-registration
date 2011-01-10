@@ -8,32 +8,24 @@ import models.Participant;
  * ie. the {@link Participant} and {@link Event}
  */
 public class RegistrationEvent {
-	public Participant participant;
-	public Event event;
+	final private String lastName;
+	final private String firstName;
+	final private String emailAddress;
+	final private String company;
+	final private int participants;
+	final private String title;
 
 	/**
 	 * @param participant the {@link models.Participant} that registered
 	 * @param event the {@link Event} that the participant registered too
 	 */
 	public RegistrationEvent(final Participant participant, final Event event) {
-		this.participant = participant;
-		this.event = event;
-	}
-
-	/**
-	 * Returns the actual participant
-	 * @return the participant
-	 */
-	public Participant getParticipant() {
-		return this.participant;
-	}
-
-	/**
-	 * Returns the actual event
-	 * @return the event
-	 */
-	public Event getEvent() {
-		return this.event;
+		this.lastName = participant.lastName;
+		this.firstName = participant.firstName;
+		this.emailAddress = participant.emailAddress;
+		this.company = participant.company;
+		this.participants = event.participants.size();
+		this.title = event.title;
 	}
 
 	/**
@@ -42,8 +34,8 @@ public class RegistrationEvent {
 	 * @return a String with the participant's name
 	 */
 	public String getParticipantName() {
-		return String.format("%s %s", this.participant.firstName,
-			this.participant.lastName);
+		return String.format("%s %s", this.firstName,
+			this.lastName);
 	}
 
 	/**
@@ -52,8 +44,8 @@ public class RegistrationEvent {
 	 * @return a String with information about the participant
 	 */
 	public String getParticipantInfo() {
-		return String.format("%s (%s) from %s", getParticipantName(), this.participant.emailAddress,
-			this.participant.company);
+		return String.format("%s (%s) from %s", getParticipantName(), this.emailAddress,
+			this.company);
 	}
 
 	/**
@@ -63,7 +55,7 @@ public class RegistrationEvent {
 	 */
 	public String getEventInfo() {
 		return String.format("%s, which now has %s participant(s)",
-			this.event.title, this.event.participants.size());
+			this.title, this.participants);
 	}
 
 	/**
