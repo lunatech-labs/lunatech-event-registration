@@ -7,47 +7,65 @@ import rules.IRCBotFacade
 
 global rules.IRCBotFacade IRCBOT
 
+/*
+ * A registration event:
+ * a person has registered for a JUG-event
+ */
 declare RegistrationEvent
 	@role(event)
 	@expires(17m)
 end
 
+/*
+ * A notification event:
+ * a rule has sent a message to IRC,
+ * every time a message is sent, the previous
+ * Notification event is retracted and a new one
+ * inserted; basically this keeps track of the last
+ * time a message was sent
+ */
 declare Notification
 	@role(event)
 
 	bogus: int
 end
 
-declare Hartbeat
+/*
+ * A heartbeat event
+ * every second the previous heartbeat
+ * is removed and a new one inserted; basically
+ * this keeps track of the current time
+ */
+declare Heartbeat
 	@role(event)
 
 	bogus: int
 end
 
 /*
- * Initialise the hartbeat
+ * Initialise the heartbeat
  */
 rule init
 when
-	not Hartbeat()
+	not Heartbeat()
 then
-	insert(new Hartbeat());
+	insert(new Heartbeat());
 end
 
 /*
- * A new hartbeat every second
+ * A new heartbeat every second
  */
-rule hartbeat
+rule heartbeat
 	salience -100
 	timer(int: 1s)
 when
-	$hartbeat: Hartbeat()
+	$heartbeat: Heartbeat()
 then
-	retract($hartbeat);
-	insert(new Hartbeat());
+	retract($heartbeat);
+	insert(new Heartbeat());
 end
 
-rule "first notification"
+rule "first registration event"
 when
 	not Notification()
 	ArrayList(size == 1)
@@ -58,7 +76,7 @@ then
 	IRCBOT.send($rEvent.getRegistrationInfo());
 end
 
-rule "first notification multiple"
+rule "first registration events"
 when
 	not Notification()
 	ArrayList($size: size > 1)
@@ -73,10 +91,10 @@ end
  * possibly waiting until 15 minutes after the
  * last notification
  */
-rule "notification"
+rule "registration event during or after wait period"
 when
-	$hartbeat: Hartbeat()
-	not Notification(this before[0m, 15m] $hartbeat)
+	$heartbeat: Heartbeat()
+	not Notification(this before[0m, 15m] $heartbeat)
 	$notification: Notification()
 	ArrayList(size == 1)
 		from collect (RegistrationEvent(this after $notification))
@@ -92,10 +110,10 @@ end
  * registrations, waiting until 15 minutes after
  * the last notification
  */
-rule "notification multiple"
+rule "multiple registration events during or after wait period"
 when
-	$hartbeat: Hartbeat()
-	not Notification(this before[0m, 15m] $hartbeat)
+	$heartbeat: Heartbeat()
+	not Notification(this before[0m, 15m] $heartbeat)
 	$notification: Notification()
 	ArrayList($size: size > 1)
 		from collect (RegistrationEvent(this after $notification))
