@@ -13,6 +13,6 @@ public class RulesBootstrapJob extends Job {
 	@Override
 	public void doJob() throws Exception {
 		Logger.info("Starting rules engine");
-		RulesProcessor.start();
+		RulesProcessor.startRulesProcessor();
 	}
 }

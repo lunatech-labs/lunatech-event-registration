@@ -17,12 +17,14 @@ import play.Logger;
 import rules.IRCBotFacade;
 import rules.RegistrationEvent;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
  * Instantiates a rules engine, loads 'registration.drl' and its globals. 
  */
-public class RulesProcessor {
+public class RulesProcessor extends Thread {
 	private static final String MY_REF = "rules-processor";
 	private final StatefulKnowledgeSession statefulKnowledgeSession;
 
@@ -48,20 +50,31 @@ public class RulesProcessor {
 		knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
 		this.statefulKnowledgeSession = knowledgeBase.newStatefulKnowledgeSession();
 		this.statefulKnowledgeSession.setGlobal("IRCBOT", new IRCBotFacade());
-
-		new Thread(new Runnable() {
-			public void run() {
-				statefulKnowledgeSession.fireUntilHalt();
-			}
-		}).start();
 	}
 
+	@Override
+	public void run(){
+		statefulKnowledgeSession.fireUntilHalt();
+	}
+	
+	/**
+	 * We are doing the cleanup in a method defined outside this classloader's class base: in 
+	 * Thread.interrupt, so that we don't have to deal with class mismatch when Play reloads this class
+	 * in a new classloader when we want to cleanup the previous classes' thread.
+	 */
+	@Override
+	public void interrupt(){
+		statefulKnowledgeSession.halt();
+		statefulKnowledgeSession.dispose();
+		super.interrupt();
+	}
+	
 	/**
 	 * Initializes the singleton
 	 * @throws InstantiationException if there's a failure trying to setup the rules engine
 	 */
-	public static void start() throws InstantiationException {
-		Logger.info("Starting Rules engine");
+	public static void startRulesProcessor() throws InstantiationException {
+		Logger.info("Starting rules engine");
 
 		init();
 	}
@@ -72,18 +85,19 @@ public class RulesProcessor {
 	 * @throws InstantiationException if there's a failure trying to setup the rules engine
 	 */
 	private static RulesProcessor init() throws InstantiationException {
-		RulesProcessor rulesProcessor = (RulesProcessor) StaticHolder.refs.get(MY_REF);
+		// only access it as parent-classloader type (Thread) see #interrupt for explanation
+		Thread rulesProcessor = (Thread) StaticHolder.refs.get(MY_REF);
 
 		if (rulesProcessor != null) {
 			Logger.info("Destroying old Rules engine");
-
-			rulesProcessor.statefulKnowledgeSession.dispose();
+			rulesProcessor.interrupt();
 		}
 
 		Logger.info("Starting rules processor");
 		rulesProcessor = new RulesProcessor();
+		rulesProcessor.start();
 		StaticHolder.refs.put(MY_REF, rulesProcessor);
-		return rulesProcessor;
+		return (RulesProcessor)rulesProcessor;
 	}
 
 	/**
