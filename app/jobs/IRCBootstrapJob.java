@@ -5,7 +5,7 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
 @OnApplicationStart
-public class IRCJob extends Job<Void> {
+public class IRCBootstrapJob extends Job<Void> {
 	
 	@Override
 	public void doJob() throws Exception {
