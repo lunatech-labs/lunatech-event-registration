@@ -1,5 +1,6 @@
 package jobs;
 
+import irc.IRCBot;
 import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;

@@ -1,5 +1,6 @@
 package jobs;
 
+import irc.IRCBot;
 import play.jobs.Job;
 
 public class IRCMessageJob extends Job<Void>{

@@ -1,6 +1,6 @@
 package rules;
 
-import jobs.IRCBot;
+import irc.IRCBot;
 import play.Logger;
 
 /**
