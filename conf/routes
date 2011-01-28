@@ -4,6 +4,7 @@
 
 # Home page
 GET     /event/										Application.index
+GET		/event/test/{community}/{eventId}			Registration.test
 GET		/event/embed/{community}/{eventId}			Registration.embed
 GET		/event/register/{community}/{eventId}		Registration.register
 GET		/event/confirm/{community}/{eventId}		Registration.confirm
