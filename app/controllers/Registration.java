@@ -85,7 +85,7 @@ public class Registration extends Controller {
 			returnURL = confirmURL;
 		
 		RegistrationMails.confirmEmail(emailAddress, event, returnURL);
-		render(community, event, confirmURL, embed, returnURL);
+		render(community, event, confirmURL, embed, returnURL, emailAddress);
 	}
 	
 	public static void confirm(String community, String eventId, String emailAddress, String confirmationCode,
