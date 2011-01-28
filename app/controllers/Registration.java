@@ -1,5 +1,9 @@
 package controllers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,8 +61,26 @@ public class Registration extends Controller {
 		String confirmURL = Router.getFullUrl("Registration.confirm", args);
 		
 		if(!StringUtils.isEmpty(returnURL)){
-			returnURL += returnURL.contains("?") ? "&" : "?";
-			returnURL += "confirmationCode="+confirmationCode+"&emailAddress="+emailAddress;
+			URI uri;
+			try {
+				uri = new URI(returnURL);
+			} catch (URISyntaxException e) {
+				Logger.error(e, "Invalid return url: %s", returnURL);
+				badRequest();
+				return;
+			}
+			returnURL = uri.getScheme()+"://"+uri.getHost();
+			if(uri.getPort() != -1)
+				returnURL += ":"+uri.getPort();
+			returnURL += uri.getPath();
+			String query = uri.getQuery();
+			if(query == null)
+				query = "";
+			else
+				query = query+"&";
+			returnURL += "?"+query+"confirmationCode="+confirmationCode+"&emailAddress="+URLEncoder.encode(emailAddress);
+			if(uri.getFragment() != null)
+				returnURL += "#"+uri.getFragment();
 		}else
 			returnURL = confirmURL;
 		
