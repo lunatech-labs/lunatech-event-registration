@@ -1,3 +1,9 @@
+lunatech-events (1.2.2) maverick; urgency=low
+
+  * Improved rules switch; rules processor fireUntilHalt mode eats CPU
+
+ -- Francisco José Canedo Dominguez <paco+debian@lunatech.com>  Fri, 25 Feb 2011 14:02:18 +0100
+
 lunatech-events (1.2.1) maverick; urgency=low
 
   * Fixed returnURL encoding issues
