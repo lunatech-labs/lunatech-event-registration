@@ -14,6 +14,7 @@
 
 #{if !embed}
 	<h3>Registration for ${event.title}</h3>
+	${event.description.raw()}
 #{/if}
 
 #{if !event.registrationOpen}
