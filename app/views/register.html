@@ -23,7 +23,18 @@
 #{else}
 	#{if !embed}
 		<p>
-			Event takes place on the ${event.date.format('dd MMM yyyy')}.
+		    %{
+		     day = event.date.format('dd');
+		     if(day.endsWith("1"))
+		      postfix = "st";
+		     else if(day.endsWith("2"))
+		      postfix = "nd";
+		     else if(day.endsWith("3"))
+		      postfix = "rd";
+		     else
+		      postfix = "th";
+		    }%
+			Event takes place on the ${day}${postfix} of ${event.date.format('MMMM yyyy')}.
 		</p>
 	#{/if}
 	
