@@ -1,3 +1,10 @@
+lunatech-events (1.2.3) maverick; urgency=low
+
+  * Added description to the non-embedded page
+  * Fixed some CSS issues
+
+ -- Stephane Epardaud <stephane@epardaud.fr>  Fri, 04 Mar 2011 11:40:07 +0100
+
 lunatech-events (1.2.2) maverick; urgency=low
 
   * Improved rules switch; rules processor fireUntilHalt mode eats CPU
