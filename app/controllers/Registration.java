@@ -18,6 +18,7 @@ import models.Participant;
 import play.Logger;
 import play.Play;
 import play.data.validation.Validation;
+import play.i18n.Messages;
 import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Router;
@@ -38,7 +39,7 @@ public class Registration extends Controller {
 		render(community, event, embed, returnURL);
 	}
 
-	public static void registerParticipant(String community, String eventId, boolean embed, String returnURL, 
+	public static void registerParticipant(String community, String eventId, boolean embed, String returnURL,
 			Participant participant){
 		Event event = Event.findById(eventId);
 		notFoundIfNull(event);
@@ -50,7 +51,7 @@ public class Registration extends Controller {
 			Validation.keep();
 			register(community, eventId, embed, returnURL);
 		}
-		
+
 		String emailAddress = participant.emailAddress;
 		String confirmationCode = Crypto.sign(participant.emailAddress);
 
@@ -60,7 +61,7 @@ public class Registration extends Controller {
 		args.put("community", community);
 		args.put("eventId", eventId);
 		String confirmURL = Router.getFullUrl("Registration.confirm", args);
-		
+
 		if(!StringUtils.isEmpty(returnURL)){
 			URI uri;
 			try {
@@ -84,7 +85,7 @@ public class Registration extends Controller {
 				returnURL += "#"+uri.getFragment();
 		}else
 			returnURL = confirmURL;
-		
+
 		RegistrationMails.confirmEmail(emailAddress, event, returnURL);
 		render(community, event, confirmURL, embed, returnURL, emailAddress);
 	}
@@ -179,13 +180,18 @@ public class Registration extends Controller {
 			sendIRCMessage(participant, event);
 	}
 
+	/**
+	 * Announces a registration (a participant for an event) on IRC.
+	 */
 	private static void sendIRCMessage(final Participant participant,
 			final Event event) {
-		IRCMessageJob ircMessageJob = new IRCMessageJob(participant.firstName
-				+ " " + participant.lastName + " (" + participant.emailAddress
-				+ "), from " + participant.company + ", has registered for "
-				+ event.title + ", which now has " + event.participants.size()
-				+ " participant(s)");
+		final String message = Messages.get("irc.notification",
+			event.participants.size(),
+			participant.firstName,
+			participant.lastName,
+			participant.company,
+			event.title);
+		IRCMessageJob ircMessageJob = new IRCMessageJob(message);
 		ircMessageJob.now();
 	}
 
