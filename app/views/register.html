@@ -27,6 +27,7 @@
 	<p>This event has reached its limit of ${event.participantLimit} participants.
 	If you would like us to notify you should any places become available, please e-mail
 	<a href="mailto:events@lunatech.com?subject=Waiting+list:+${event.title.urlEncode()}">events@lunatech.com</a>.</p>
+	<p>${event.descriptionAfterLimit.raw()}</p>
 #{/elseif}
 
 #{else}
@@ -61,9 +62,7 @@
 				Register to be notified if places become available.
 				<b>You will not be able to go to the event unless you are contacted</b> to notify the limit has changed.
 			</p>
-			<p>
-			    ${event.descriptionAfterLimit.raw()}
-			</p>
+			<p>${event.descriptionAfterLimit.raw()}</p>
 		#{/else}
 		</div>
 	#{/if}
