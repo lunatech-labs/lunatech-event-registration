@@ -40,9 +40,9 @@
 </script>
 
 #{ifErrors}
- 
+
    <h1>Errors…</h1>
- 
+
 #{/ifErrors}
 
 <h1>${event.id}</h1>
@@ -69,45 +69,46 @@
   </td>
  </tr>
  #{if !isNew}
- <tr>  
+ <tr>
   <th>Template</th>
   <td>${event.template}</td>
  </tr>
  #{/if}
- <tr>  
+ <tr>
   <th>Open</th>
   <td>
   	<input type="checkbox" name="event.open" ${event.open ? 'checked="checked"' : ''}/>
   </td>
  </tr>
- <tr>  
+ <tr>
   <th>Title</th>
   <td>
   	<input name="event.title" value="${event.title}"/>
 	<span class="error">#{error 'event.title' /}</span>
   </td>
  </tr>
- <tr>  
+ <tr>
   <th>Description</th>
   <td>
   	<textarea name="event.description">${event.description}</textarea>
 	<span class="error">#{error 'event.description' /}</span>
   </td>
  </tr>
- <tr>  
+ <tr>
   <th>Limit</th>
   <td>
   	<input name="event.participantLimit" value="${event.participantLimit}"/>
 	<span class="error">#{error 'event.participantLimit' /}</span>
   </td>
  </tr>
- <tr>  
+ <tr>
   <th>Hard Limit</th>
   <td>
-   	<input type="checkbox" name="event.hardLimit" ${event.hardLimit ? 'checked="checked"' : ''}"/>
+		<input type="hidden" name="event.hardLimit" value="false">
+   	<input type="checkbox" name="event.hardLimit" ${event.hardLimit ? 'checked="checked"' : ''}">
   </td>
  </tr>
- <tr>  
+ <tr>
   <th>Description After Limit</th>
   <td>
   	<textarea name="event.descriptionAfterLimit">${event.descriptionAfterLimit}</textarea>
