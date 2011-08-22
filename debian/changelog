@@ -1,3 +1,12 @@
+lunatech-events (1.2.5) maverick; urgency=low
+
+  * [#EV-3] Improve text when event is full
+  * Fix broken hard limit checkbox
+  * Remove configuration file cruft
+  * [#EV-1] Shorter IRC channel notification text
+
+ -- Peter Hilton <events@lunatech.com>  Mon, 22 Aug 2011 16:25:28 +0100
+
 lunatech-events (1.2.4) maverick; urgency=low
 
   * Cosmetic change about the date displayed
