@@ -1,15 +1,15 @@
 #{extends 'register.html' /}
 #{set title:'Complete registration' /}
-    
+    <h3>Complete registration</h3>
     <p>
     	We have now confirmed your email address, please complete the following form in order to register for
     	the event.
     </p>
-    
+
     #{ifErrors}
 		<div class="errors">Please correct the following errors</div>
 	#{/ifErrors}
-    
+
     #{form @Registration.confirmParticipant(community, event.id, confirmationCode, embed)}
     	<input type="hidden" name="participant.emailAddress" value="${emailAddress}"/>
     	<table>
@@ -22,9 +22,9 @@
     	<tr>
     		<th><label for="participant.firstName">First Name</label></th>
     		<td>
-    			<input type="text" 
-					class="${errors.forKey('participant.firstName') ? 'has_error' : ''}" 
-    				name="participant.firstName" 
+    			<input type="text"
+					class="${errors.forKey('participant.firstName') ? 'has_error' : ''}"
+    				name="participant.firstName"
     				value="${flash['participant.firstName']}"/>
 				<span class="error">#{error 'participant.firstName' /}</span>
     		</td>
@@ -32,9 +32,9 @@
     	<tr>
     		<th><label for="participant.lastName">Last Name</label></th>
     		<td>
-    			<input type="text" 
-					class="${errors.forKey('participant.lastName') ? 'has_error' : ''}" 
-    				name="participant.lastName" 
+    			<input type="text"
+					class="${errors.forKey('participant.lastName') ? 'has_error' : ''}"
+    				name="participant.lastName"
     				value="${flash['participant.lastName']}"/>
 				<span class="error">#{error 'participant.lastName' /}</span>
     		</td>
@@ -42,9 +42,9 @@
     	<tr>
     		<th><label for="participant.company">Company</label></th>
     		<td>
-    			<input type="text" 
-					class="${errors.forKey('participant.company') ? 'has_error' : ''}" 
-    				name="participant.company" 
+    			<input type="text"
+					class="${errors.forKey('participant.company') ? 'has_error' : ''}"
+    				name="participant.company"
     				value="${flash['participant.company']}"/>
 				<span class="error">#{error 'participant.company' /}</span>
     		</td>

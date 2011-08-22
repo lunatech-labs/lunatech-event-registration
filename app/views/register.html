@@ -13,59 +13,63 @@
 #{/set}
 
 #{if !embed}
-	<h3>Registration for ${event.title}</h3>
+	<h3>${event.title}</h3>
 	${event.description.raw()}
 #{/if}
 
 #{if !event.registrationOpen}
+	<h3>Registration closed</h3>
 	<p>We are sorry but the registration for ${event.title} is closed. Try to register early for the next event ;).</p>
 #{/if}
+
+#{elseif event.full}
+	<h3>Event full</h3>
+	<p>This event has reached its limit of ${event.participantLimit} participants.
+	If you would like us to notify you should any places become available, please e-mail
+	<a href="mailto:events@lunatech.com?subject=Waiting+list:+${event.title.urlEncode()}">events@lunatech.com</a>.</p>
+#{/elseif}
+
 #{else}
-	#{if !embed}
-		<p>
-		    %{
-		     day = event.date.format('dd');
-		     if(day.endsWith("1"))
-		      postfix = "st";
-		     else if(day.endsWith("2"))
-		      postfix = "nd";
-		     else if(day.endsWith("3"))
-		      postfix = "rd";
-		     else
-		      postfix = "th";
-		    }%
-			We hope to see you on the ${day}${postfix} of ${event.date.format('MMMM yyyy')}.
-		</p>
-	#{/if}
-	
-    #{if event.participantLimit}
-    	<div class="limit">
-    	<p>
-    	This event is limited to the first ${event.participantLimit} participants. There are currently ${event.participants.size()} participant(s) registered.
-	    </p>  
+	#{if event.participantLimit}
+		<div class="limit">
 		#{if event.participantLimit > event.participants.size()}
+			<h3>Registration</h3>
+
+			#{if !embed}
+				<p>We hope to see you on ${event.date.format('dd MMMM yyyy')}.</p>
+			#{/if}
+
+			<p>
+				This event is limited to the first ${event.participantLimit} participants.
+				There ${event.participants.pluralize('is', 'are')} currently ${event.participants.size()} participant${event.participants.pluralize()} registered.
+			</p>
 			<p>
 		    #{if event.hardLimit}
 				Registration after the ${event.participantLimit} first participants will be closed, so register fast.
 		    #{/if}
 		    #{else}
-				Registration after the ${event.participantLimit} first participants will remain open in case the limit changes before the event, but <b>you will not be able to go to the
-				event unless you are contacted</b> to notify the limit has changed.
+				Registration after the ${event.participantLimit} first participants will remain open in case places become available,
+				but <b>you will not be able to go to the event unless you are contacted</b> to notify you there are places available.
 		    #{/else}
 		#{/if}
 		#{else}
+			<h3>Waiting list</h3>
+
 			<p>
-			<span class="strong">The number of participants has reached its limit</span>, but registration remains open in case the limit changes before the event.
-			Register to be notified if the limit changes. <b>You will not be able to go to the event unless you are contacted</b> to notify the limit has changed.
-			</p>  
+				<span class="strong">The number of participants has reached its limit of ${event.participantLimit} participants</span>,
+				but registration remains open in case the limit changes before the event, or in case of cancellations.
+				Register to be notified if places become available.
+				<b>You will not be able to go to the event unless you are contacted</b> to notify the limit has changed.
+			</p>
 			<p>
-			    ${event.descriptionAfterLimit.raw()} 
-			</p>  
+			    ${event.descriptionAfterLimit.raw()}
+			</p>
 		#{/else}
 		</div>
-    #{/if}
-    
-    #{doLayout /}
+	#{/if}
+	#{else}
+		<h3>Registration</h3>
+	#{/else}
 
+	#{doLayout /}
 #{/else}
-

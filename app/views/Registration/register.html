@@ -1,33 +1,33 @@
 #{extends 'register.html' /}
-#{set title:'Register for '+event.title /}
+#{set title:event.title + ' registration' /}
 
-    <p>
-    	In order to register for this event we must first verify your email address. We will do so by sending you
-    	an email with a verification code.
-    </p>
+<p>
+	In order to register for ${event.participantLimit ? 'the waiting list' : 'this event'} we must first verify your e-mail address.
+	We will do so by sending you an e-mail with a verification code.
+</p>
 
-    #{ifErrors}
-		<div class="errors">Please correct the following errors</div>
-	#{/ifErrors}
-    
-    #{form @Registration.registerParticipant(community, event.id, embed, returnURL)}
-    	<table>
-    	<tr>
-    		<th><label for="participant.emailAddress">Email*</label></th>
-    		<td>
-    			<input type="text"
-    				class="${errors.forKey('participant.emailAddress') ? 'has_error' : ''}" 
-    				name="participant.emailAddress" 
-    				value="${flash['participant.emailAddress']}"/>
-				<span class="error">#{error 'participant.emailAddress' /}</span>
-    		</td>
-    	</tr>
-    	<tr>
-    		<td></td>
-    		<td><input type="submit" value="Verify email"/></td>
-    	</tr>
-    	</table>
-    	<span class="info">Fields marked with "*" are required</span>
-    #{/form}
+#{ifErrors}
+	<div class="errors">Please correct the following errors</div>
+#{/ifErrors}
+
+#{form @Registration.registerParticipant(community, event.id, embed, returnURL)}
+	<table>
+	<tr>
+		<th><label for="participant.emailAddress">Email*</label></th>
+		<td>
+			<input type="text"
+				class="${errors.forKey('participant.emailAddress') ? 'has_error' : ''}"
+				name="participant.emailAddress"
+				value="${flash['participant.emailAddress']}"/>
+			<span class="error">#{error 'participant.emailAddress' /}</span>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="submit" value="Verify email"/></td>
+	</tr>
+	</table>
+	<span class="info">Fields marked with "*" are required</span>
+#{/form}
 
 

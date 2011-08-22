@@ -24,40 +24,40 @@ import play.db.jpa.GenericModel;
 public class Event extends GenericModel {
 	@Id
 	public String id;
-	
+
 	@As("dd-MM-yyyy")
 	@NotNull
 	public Date date;
-	
+
 	@NotEmpty
 	@Lob
 	public String description;
-	
+
 	@NotEmpty
 	public String template;
-	
+
 	@NotEmpty
 	public String title;
-	
+
 	public Integer version;
-	
+
 	public Date dateCreated;
-	
+
 	public boolean open;
-	
+
 	@Lob
 	public String descriptionAfterLimit;
-	
+
 	public Boolean hardLimit;
-	
+
 	public Integer participantLimit;
-	
+
 	public Boolean embed;
 
 	@JoinColumn(name = "community_id")
 	@ManyToOne
 	public Community community;
-	
+
 	@JoinTable(joinColumns = @JoinColumn(name = "events_id"),
 			inverseJoinColumns = @JoinColumn(name = "participants_id"))
 	@ManyToMany
@@ -67,7 +67,10 @@ public class Event extends GenericModel {
 			inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	@ManyToMany
 	public Set<Tag> tags = new HashSet<Tag>();
-	
+
+	public boolean isFull() {
+		return hardLimit && participantLimit != null && participants.size() >= participantLimit;
+	}
 
 	public boolean isRegistrationOpen(){
 		if(!open)
