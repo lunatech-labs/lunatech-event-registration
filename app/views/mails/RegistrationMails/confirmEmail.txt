@@ -1,11 +1,11 @@
-You have been sent this email because someone (hopefully you) is trying 
-to register to the following event:
+You have been sent this email because someone (hopefully you) is trying
+to register for the following event:
 
 ${event.title}
 
 Which will take place on: ${event.date.format('dd MMM yyyy')}.
 
-If you have tried to register to this event, then please go to the following
+If you have tried to register for this event, then please go to the following
 website in order to complete your registration:
 
 ${confirmURL.raw()}
