@@ -1,1 +1,1 @@
-irc.notification = Registration %d. %s %s, %s (%s)
+irc.notification = %d. %s %s, %s (%s)
