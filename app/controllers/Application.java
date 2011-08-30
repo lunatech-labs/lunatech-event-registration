@@ -22,14 +22,14 @@ import play.mvc.With;
 public class Application extends Controller {
 
     public static void index() {
-    	List<Event> events = Event.find("ORDER BY date").fetch();
+    	List<Event> events = Event.find("order by date desc").fetch();
         render(events);
     }
-    
+
     public static void event(String id){
     	Event event = Event.findById(id);
     	notFoundIfNull(event);
-    	
+
     	render(event);
     }
 
@@ -41,18 +41,18 @@ public class Application extends Controller {
     public static void editEvent(String id){
     	Event event = Event.findById(id);
     	notFoundIfNull(event);
-    	
+
     	render(event);
     }
 
     public static void deleteEvent(String id){
     	Event event = Event.findById(id);
     	notFoundIfNull(event);
-    	
+
     	event.delete();
     	index();
     }
-    
+
     public static void saveEvent(Event event){
     	boolean wasPersistent = event.isPersistent();
     	if(!wasPersistent){
@@ -81,24 +81,24 @@ public class Application extends Controller {
     	}
     	event(event.id);
     }
-    
+
     public static void unregisterParticipant(String eventId, Long userId){
     	Event event = Event.findById(eventId);
     	notFoundIfNull(event);
     	Participant participant = Participant.findById(userId);
     	notFoundIfNull(participant);
-    	
+
     	event.participants.remove(participant);
     	event.save();
     	event(eventId);
     }
-    
+
     public static void removeTag(String eventId, Long tagId){
     	Event event = Event.findById(eventId);
     	notFoundIfNull(event);
     	Tag tag = Tag.findById(tagId);
     	notFoundIfNull(tag);
-    	
+
     	event.tags.remove(tag);
     	event.save();
     	event(eventId);
@@ -107,7 +107,7 @@ public class Application extends Controller {
     public static void addTags(String eventId, String tags){
     	Event event = Event.findById(eventId);
     	notFoundIfNull(event);
-    	
+
     	for(String tag : tags.split("\\s+")){
     		if(tag.isEmpty())
     			continue;
@@ -128,7 +128,7 @@ public class Application extends Controller {
     	notFoundIfNull(participant);
     	Tag tag = Tag.findById(tagId);
     	notFoundIfNull(tag);
-    	
+
     	participant.tags.remove(tag);
     	participant.save();
     	participant(participantId);
@@ -137,7 +137,7 @@ public class Application extends Controller {
     public static void addParticipantTags(Long participantId, String tags){
     	Participant participant = Participant.findById(participantId);
     	notFoundIfNull(participant);
-    	
+
     	for(String tag : tags.split("\\s+")){
     		if(tag.isEmpty())
     			continue;
@@ -152,23 +152,23 @@ public class Application extends Controller {
     	participant.save();
     	participant(participantId);
     }
- 
+
     public static void participants() {
     	List<Participant> participants = Participant.find("ORDER BY firstName, lastName").fetch();
         render(participants);
     }
- 
+
     public static void participant(Long participantId){
     	Participant participant = Participant.findById(participantId);
     	notFoundIfNull(participant);
-    	
+
     	render(participant);
     }
 
     public static void deleteParticipant(Long id){
     	Participant participant = Participant.findById(id);
     	notFoundIfNull(participant);
-    	
+
     	for(Event event : participant.events){
     		event.participants.remove(participant);
     		event.save();
