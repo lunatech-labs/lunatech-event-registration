@@ -8,3 +8,4 @@ debian/lunatech-events
 .project
 /.idea/
 /events.iml
+debian/files
