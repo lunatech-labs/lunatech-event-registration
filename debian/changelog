@@ -1,5 +1,6 @@
 lunatech-events (1.2.5) maverick; urgency=low
 
+  * Sort events list with newest first
   * [#EV-3] Improve text when event is full
   * Fix broken hard limit checkbox
   * Remove configuration file cruft
